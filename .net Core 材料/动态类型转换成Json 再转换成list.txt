@@ -1,0 +1,10 @@
+  	            
+
+
+	            string strs = JsonConvert.SerializeObject(kolAssets);
+                            JObject jObject = JObject.Parse("{\"result\":" + strs + "}");
+                            IEnumerable<JToken> IdList = jObject.GetValue("result")?.Select(x => ((JObject)x)?.GetValue("Id"));
+                            int[] results = Array.ConvertAll<JToken, int>(IdList?.ToArray(), x => int.Parse(x.ToString()));
+                            IEnumerable<AssetTag> assetTag = await _AssetTagService.GetAssetTags(results.ToList(), typeof(KolAsset).Name);
+                            IEnumerableAssetLib = assetTag.GroupBy(a => a.Name).ToList();
+                            assetGrouplist = GroupMethod(IEnumerableAssetLib, assettagBox.Source);

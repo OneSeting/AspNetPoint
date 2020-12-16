@@ -1,0 +1,138 @@
+一、MVC 服务注册
+
+ASP.NET Core 3.0 添加了用于注册内部的 MVC 方案的新选项Startup.ConfigureServices。
+三个新的顶级扩展方法与 MVC 方案上IServiceCollection可用。 模板使用这些新方法，而不是UseMvc。 但是，AddMvc继续像它已在以前的版本。
+下面的示例将添加对控制器和与 API 相关的功能，但不是视图或页面的支持。 API 模板使用此代码：
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+}
+
+下面的示例将添加对控制器、 与 API 相关的功能，和视图，但不是页面的支持。 Web 应用程序 (MVC) 模板使用此代码：
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+}
+下面的示例添加支持 Razor 页面和最小控制器支持。 Web 应用程序模板使用此代码：
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddRazorPages();
+}
+此外可以组合的新方法。 下面的示例是等效于调用AddMvcASP.NET Core 2.2 中：
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+    services.AddRazorPages();
+}
+
+二、Startup.Configure配置
+
+一般不建议：
+添加UseRouting。
+如果该应用程序调用UseStaticFiles，将置于UseStaticFiles之前 UseRouting。
+如果应用使用身份验证/授权功能，如AuthorizePage或[Authorize]，将对UseAuthentication并UseAuthorization后 UseRouting。
+如果应用使用CORS功能，如[EnableCors]，将放置UseCors下一步。
+替换UseMvc或UseSignalR与UseEndpoints。
+以下是一种Startup.Configure典型的 ASP.NET Core 2.2 应用中：
+
+复制代码
+public void Configure(IApplicationBuilder app)
+{
+    ...
+
+    app.UseStaticFiles();
+    
+    app.UseAuthentication();
+
+    app.UseSignalR(hubs =>
+    {
+        hubs.MapHub<ChatHub>("/chat");
+    });
+
+    app.UseMvc(routes =>
+    {
+        routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+    });
+}
+复制代码
+ 
+
+现在的控制器映射内发生UseEndpoints。
+
+添加MapControllers如果应用使用属性路由。 由于路由包括对许多框架在 ASP.NET Core 3.0 或更高版本的支持，添加属性路由的控制器是参加。
+
+将为以下内容：
+MapRoute 使用 MapControllerRoute
+MapAreaRoute 使用 MapAreaControllerRoute
+由于路由现在包括对不止是 MVC 的支持，已更改了术语进行明确说明他们所做的这些方法。 如传统路由MapControllerRoute / MapAreaControllerRoute / MapDefaultControllerRoute它们要添加的顺序应用。 将第一位更具体的路由 （如某一区域的路由）。
+如下示例中：
+MapControllers 添加了对属性路由的控制器支持。
+MapAreaControllerRoute 将控制器的传统路由添加区域。
+MapControllerRoute 添加控制器的常规路由。
+
+现在映射 Razor 页面内发生UseEndpoints。
+添加MapRazorPages如果应用使用 Razor 页面。 由于终结点路由包括对许多框架的支持添加 Razor 页面现在参加。
+
+更新后asp.netCore3.0中Startup.Configure代码： 
+
+复制代码
+ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseCookiePolicy();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapAreaControllerRoute(
+                    name: "areas", "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
+        }
+复制代码
+如果要进行分区路由，需要在控制器Controller头加Area和Route标签，否则不能像在asp.netCore2.0中自动路由控制器和Action。示例代码如下：
+
+复制代码
+namespace WebApplication1.Areas.CMS.Controllers
+{
+    [Area("CMS")]
+    [Route("CMS/[controller]/[action]")]
+    public class NewsController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult List()
+        {
+            return View();
+        }
+    }
+}
+复制代码
+这两句一定要加[Area("CMS")]、[Route("CMS/[controller]/[action]")]

@@ -1,0 +1,172 @@
+----------------------------------------------Vue知识点-----------------------------------------------
+import：引入模块
+export： 用来导出模块
+export 和export default 的区别在于：export 可以导出多个命名模块（export default 只能导出一个默认模块这个模块可以匿名）
+
+meta：
+注释：直接在路由配置的时候，给每个路由添加一个自定义的meta对象，在meta对象中可以设置一些状态，来进行一些操作。用它来做登录校验再合适不过了
+
+scrollBehavior 滚动行为
+注释：scrollBehavior (to, from, savedPosition) {  // return 期望滚动到哪个的位置  }
+例：scrollBehavior (to, from, savedPosition) {
+  return { x: 0, y: 0 }
+}
+
+outer.matcher是比较核心的一个属性。对外提供两个方法match(负责route匹配), addRoutes（动态添加路由）。
+具体原因：在做路径切换transitionTo方法中，首先就会使用const route = this.router.match(location, this.current)来匹配route, 其实内部会使用matcher来做匹配。修改了matcher即新的routes生效。
+
+component：
+
+this.$router.replace({ path: '/'})  
+注释：实现指定url跳转，这个方法会向history栈添加一个记录，使用后退this.$router.back();会返回到上一个页面。
+this.$router.push({path:'/pms/addProduct'});
+注释：实现指定url跳转，这个方法不会向history栈添加记录，使用后退this.$router.back();会返回到上上一个页面。因为它的上个页面是不存在的。history栈没有记录
+
+
+
+---------------------------------------------------Vue属性知识点--------------------------------------------------
+<template>
+的作用是模板占位符，可帮助我们包裹元素，但在循环过程当中，template不会被渲染到页面上
+<template v-for="(item, index) in list" :key="item.id">
+                <div>{{item.text}}--{{index}}</div>
+                <span>{{item.text}}</span>
+</template>
+
+ <svg-icon icon-class="user" /> 在Vue中使用svg图标即封装自定义svg-icon标签   （例：   <svg-icon icon-class="add"></svg-icon>）
+
+
+ref  注释：vue给我们提供一个操作dom的属性，ref。绑定在dom元素上时，用起来与id差不多，通过this.$refs来调用
+
+v-model和  :model 的区别  注释：:model是v-bind:model的缩写，是绑定自定义属性，它只是将父组件的数据传递给子组件，并没有实现父组件和子组件数据之间的双向绑定。（引用类型除外，若子组件改变引用类型的数据都话，父组件也会改变）
+v-model是内置的数据双向绑定。
+
+:是v-bind的缩写，是为了动态绑定数据。加上了冒号是为了动态绑定数据，等号后面可以写变量。如果不使用冒号，等号后面就可以写字符串等原始类型数据。这时就无法进行动态绑定数据了
+
+“:” 是指令 “v-bind”的缩写
+可以绑定一个变量或者有返回值的函数
+“@”是指令“v-on”的缩写
+绑定一个函数，执行业务逻辑
+
+
+prop     注释：所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级prop 的更新会向下流动到子组件中，但是反过来则不行。prop 会在一个组件实例创建之前进行验证，所以实例的属性 (如 data、computed 等) 在 default 或 validator 函数中是不可用的。
+
+rules                  注释：表单验证（  userName: [{required: true,message: "请输入用户名称",trigger: "blur"} ]）  
+required            注释：是否为必填
+message            注释：失去焦点所提示的内容
+trigger: "blur"    注释：触发事件的验证类型
+validator            注释：表单事件的验证方法
+trigger: ‘blur’ 注释“当失去焦点时（光标不显示的时候）
+
+{ required: true, message: "请输入您的姓名", trigger: "blur" } 失去 交代呢时进行非空判断
+{ min: 3, max: 20, message: "长度在 3 到 20 个字符", trigger: "blur" } 判断长度
+
+
+
+---------------------------------------------------Vue样式知识点--------------------------------------------------
+
+v-waves:
+
+border fit highlight-current-row
+
+slot-scope
+
+el-form                注释：是 vue element ui 组件使用 -form 表单
+el-form-item        注释：form 表单中的标签
+
+&:first-of-type {}   注释：&符号是scss和less里的语法，代表上一级选择器，实际编译成css就是span:first-of-type{}
+
+auto-complete     注释：
+
+label-position       注释：label-position 属性来改变表单域或标签的位置，可选的值有 top/left/right ，默认的是 right ，lable-position 必须要和 label-width（表单域标签的宽度，作为 Form 直接子元素的 form-item 会继承该值） 共同使用，才会生效
+
+tabindex               注释：tabindex 属性规定元素的 tab 键控制次序（当 tab 键用于导航时）
+
+placeholder          注释：placeholder 属性提供可描述输入字段预期值的提示信息（hint）。该提示会在输入字段为空时显示，并会在字段获得焦点时消失。注释：placeholder 属性适用于以下的 <input> 类型：text, search, url, telephone, email 以及 password。
+
+icon-class             注释： 自己标签图库图片
+
+loading   	            注释：页面加载
+
+user-select            注释：css控制页面文字不能被选中user-select:none;//user-select有2个值（none表示不能选中文本，text表示可以选择文本）
+body{
+　　-moz-user-select:none;/*火狐*/
+　　-webkit-user-select:none;/*webkit浏览器*/
+　　-ms-user-select:none;/*IE10*/
+　　-khtml-user-select:none;/*早期浏览器*/
+　　user-select:none;
+}
+
+vertical-align         注释：vertical-align 属性设置元素的垂直对齐方式。
+
+-webkit-text-fill-color  注释：文字遮罩动画效果，可渐变，一个过程 颜色可设置
+.masked{
+     background:url(../image/paint.png);
+    -webkit-text-fill-color:transparent;
+    -webkit-background-clip:text;
+    -webkit-animation-name:masked-animation;
+    -webkit-animation-duration:40s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+    color:#fff;
+}
+@-webkit-keyframes masked-animation {
+    0% {background-position:left bottom;}
+    100% {background-position:right bottom;}
+}
+
+
+
+---------------------------------------------------Vue事件知识点--------------------------------------------------
+@keyup.enter.native   注释： 监听键盘事件，按了那个键触发（ 注意！！！如果用了封装组件的话，比如element，这个时候使用按键修饰符需要加上.native）
+
+@click.native.prevent  注释：
+1.给vue组件绑定事件时候，必须加上native ，否则会认为监听的是来自Item组件自定义的事件，
+2.prevent 是用来阻止默认的 ，相当于原生的event.preventDefault()
+
+//this.$refs[formName].validate({}).then().catch(())表单验证
+this.$refs[formName].validate(valid => { if (valid) {
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+
+
+$route: {
+      handler: function(route) {
+      this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+}
+$route为当前router跳转对象里面可以获取name、path、query、params等。$router为VueRouter实例，想要导航到不同URL，则使用$router.push方法，返回上一个history使用$router.go方法。
+
+
+this.$store.dispatch().then().catch()    ///
+this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+this.$router.push() 可以通过修改url实现路由跳转。
+// 字符串
+this.$router.push('/home/first')
+// 对象
+this.$router.push({ path: '/home/first' })
+// 命名的路由
+this.$router.push({ name: 'home', params: { userId: wise }})
+
+
+this.$nextTick(() => {this.$refs.password.focus()})
+this.$refs.password.focus()   注释：获取焦点
+this.$nextTick()	           注释:this.$nextTick()将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。它跟全局方法 Vue.nextTick 一样，不同的是回调的 this 自动绑定到调用它的实例上。this.$nextTick()在页面交互，尤其是从后台获取数据后重新生成dom对象之后的操作有很大的优势	
+
+
+vue 报错机制：new Error('The password can not be less than 6 digits')

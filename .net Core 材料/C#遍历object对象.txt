@@ -1,0 +1,22 @@
+1. 
+System.Reflection.PropertyInfo[] properties = item.GetType().GetProperties();  
+            foreach (System.Reflection.PropertyInfo property in properties)  
+            {  
+                string name=property.Name;  
+                string value = property.GetValue(item).ToString();  
+            }  
+
+2.
+ obj = Newtonsoft.Json.JsonConvert.SerializeObject(configModels);
+
+3. 标准json字符串
+newsoft
+Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+
+4.json数组
+Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+
+5.json对象数组
+ List<MeilField> meilFields = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MeilField>>(UniConfiguration.Get("EmailConfiguration"));
+
+[{"MailServerAddress":"hwsmtp.exmail.qq.com","MailServerPort":"465","EmailSenderAccount":"zengsen.huang@heywind.com","EmailSenderPwd":"Hzs88888888"},{"MailServerAddress":"hwsmtp.exmail.qq.com","MailServerPort":"465","EmailSenderAccount":"zengsen.huang@gmail.com","EmailSenderPwd":"Hzs88888888"}]

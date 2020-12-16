@@ -1,0 +1,73 @@
+      
+ 
+        [AssetLibAttributes(true)]
+        public string SKU { get; set; }
+
+
+1.
+namespace Unibone.Svr.Tarpa.Attributes
+{
+    public abstract class AbstractAttribute:Attribute
+    {
+        public abstract bool Valudate(object obj);
+    }
+}
+
+2.
+namespace Unibone.Svr.Tarpa.Attributes
+{
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    public class AssetLibAttributes : AbstractAttribute
+    {
+        /// <summary>
+        /// 必填
+        /// </summary>
+        private bool _required;
+        public AssetLibAttributes(bool required)
+        {
+            required = Required;
+        }
+
+        public bool Required { get => _required; set => _required = value; }
+        /// <summary>
+        /// 字段
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+
+        public override bool Valudate(object obj)
+        {
+            return obj == null && string.IsNullOrWhiteSpace(obj?.ToString());
+        }
+    }
+}
+3.
+namespace Unibone.Svr.Tarpa.Attributes
+{
+    public static class AttributeExtend
+    {
+        /// <summary>
+        /// 验证是否为空
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsValid<T>(this T assetLib)
+        {
+            Type t = assetLib.GetType();
+            foreach (var propertyInfo in assetLib.GetType().GetProperties())
+            {
+                if (propertyInfo.IsDefined(typeof(AssetLibAttributes), true))
+                {
+                    AssetLibAttributes attr = propertyInfo.GetCustomAttribute(typeof(AssetLibAttributes)) as AssetLibAttributes;
+                    if (attr.Required)
+                    {
+                       return attr.Valudate(propertyInfo.GetValue(assetLib));
+                    }                 
+                }
+            }
+            return true;
+        }
+    }
+}
+
+

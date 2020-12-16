@@ -1,0 +1,20 @@
+var orderList = result.Item2.Select(i => new
+                {
+                    i.BizOrderId,
+                    i.OrderNotes,
+                    i.CreatedOnUtc,
+                    BizOrderItemList = i.BizOrderItem.Select((j, p) =>
+                    {
+                        var product = _productService.GetProductByAliasSku(j.Alias).GetAwaiter().GetResult();
+                        var bizOrderItem = new
+                        {
+                            j.BizOrderItemId,
+                            j.SellerSku,
+                            j.Alias,
+                            ProductId = product?._id ?? "",
+                            Name = product?.Name ?? "",
+                            Color = product?.Color ?? "",
+                        };
+                        return bizOrderItem;
+                    })
+                });

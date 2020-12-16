@@ -1,0 +1,106 @@
+justify-content：在弹性盒对象的 <div> 元素中的各项周围留有空白：
+flex-start	默认值。项目位于容器的开头。	
+flex-end	项目位于容器的结尾。	
+center	项目位于容器的中心。	
+space-between	项目位于各行之间留有空白的容器内。	
+space-around	项目位于各行之前、之间、之后都留有空白的容器内。	
+initial	设置该属性为它的默认值。
+inherit	从父元素继承该属性。
+
+align-items：align-items 属性定义flex子项在flex容器的当前行的侧轴（纵轴）方向上的对齐方式。
+提示：使用每个弹性对象元素的 align-self 属性可重写 align-items 属性。
+initial：设置该属性为它的默认值。请参考initial
+inherit：从父元素继承该属性。请参阅考inherit   
+baseline：元素位于容器的基线上
+stretch：元素被拉伸以适应容器
+center：元素位于容器的中心
+flex-start ：元素位于容器的开头
+flex-end：元素位于容器的结尾
+baseline：元素位于容器的基线上
+
+flex-wrap：flex-wrap 属性规定flex容器是单行或者多行，同时横轴的方向决定了新行堆叠的方向。
+注意：如果元素不是弹性盒对象的元素，则 flex-wrap 属性不起作用。
+nowrap 默认值。规定灵活的项目不拆行或不拆列。
+wrap 规定灵活的项目在必要的时候拆行或拆列。
+wrap-reverse 规定灵活的项目在必要的时候拆行或拆列，但是以相反的顺序。
+initial 设置该属性为它的默认值。
+inherit 从父元素继承该属性。
+
+flex：fl父元素设置成 dispaly：flex 之后子元素的空间分配通过 flex 设置，其特点为弹性，即内部分配空间如果按照比例分配则其不会随着父元尺寸变化而变化。
+flex-grow	number	其它子元素的比例关系默认为 0 ，存在剩余空间不扩大
+flex-shrink	number	默认为1空间不足时候缩小
+flex-basis	| ‘auto’	设定一个长度或者自动填充
+
+object-fit：属性指定替换元素的内容应该如何适应到其使用的高度和宽度确定的框。
+fill 
+被替换的内容的大小，以填补该元素的内容框：对象的具体对象的大小是元素的使用宽度和高度。 
+contain 
+被替换的内容的大小，为自身宽高比不变，适应该元素的内容框的大小：它的具体对象的大小被解析为对元素的使用宽度和高度的含有约束。 
+cover 
+被替换的内容的尺寸却使元件的整个内容框，以保持其长宽比其具体的对象的大小被解析为针对元素的使用的宽度和高度的盖约束。 
+none 
+被替换的内容的尺寸却使元件的整个内容框，以保持其长宽比其具体的对象的大小被解析为针对元素的使用的宽度和高度的盖约束。 
+scale-down 
+内容的尺寸仿佛none或contain指定了，取将导致更小的具体对象的大小。 
+形式语法 
+
+white-space：用来设置element元素对内容中的空格的处理方式
+normal表示合并空格，多个相邻空格合并成一个空格，在源码中的换行作为空格处理，只会根据容器的大小进行自动换行。
+white-space:nowrap 不换行              white-space:nowrap和normal一样，也合并空格，但是不会根据容器大小换行，表示不换行。
+white-space:nowrap 会导致文本不换行，经常和overflow,text-overflow一起使用，
+white-space:pre 保留空格不换行，     white-space:pre的作用是保持源码中的空格，有几个空格算几个空格显示，同时换行只认源码中的换行和<br/>标签。
+white-space:pre-wrap保留空格换行，white-space:pre-wrap的作用是保留空格，并且除了碰到源码中的换行和<br/>会换行外，还会自适应容器的边界进行换行。
+white-space:pre-line合并空格换行      white-space:pre-line的作用是合并空格，换行和white-space:pre-wrap一样，遇到源码中的换行和<br/>会换行，碰到容器的边界也会换行。
+
+text-overflow：clip | ellipsis | string
+clip:修剪文本，不会显示...
+ellipsis:显示省略符号来代表被修剪的文本。
+string:使用给定的字符串来代表被修剪的文本。
+这个属性使用必须通过几个属性一块才能使用
+1，overflow:hidden;　　　　
+这个属性是内容区装不下内容应该怎么办。这里让溢出内容直接不显示。这个感觉就是必备的属性。我内容文本溢出全部不显示才能裁剪。不然裁剪之后还是显示溢出就想日狗了　　　　　　　　　　　　　
+试了下visible. 那text-overflow就不管用了。该溢出还是溢出。管你用没用text-overflow。
+2，white-space:nowrap; 　
+这个属性是空白符的操作。这里是让整个文本不换行显示;让整个内容单行显示，配合width的话就可以进行裁剪
+3，width;　　　　　　　　　
+这个属性是控制内容区的宽度。不用的话text-overflow不知道从哪里开始截断。
+
+text-transform：转换不同元素中的文本
+none	默认。定义带有小写字母和大写字母的标准的文本。
+capitalize	文本中的每个单词以大写字母开头。
+uppercase	定义仅有大写字母。
+lowercase	定义无大写字母，仅有小写字母。
+inherit	规定应该从父元素继承 text-transform 属性的值。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

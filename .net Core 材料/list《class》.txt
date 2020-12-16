@@ -1,0 +1,114 @@
+ //public T Find<T>(int id) where T : BaseModel
+        //{
+        //    Type type = typeof(T);
+        //    string tableName = type.GetMappingName();
+        //    string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.GetMappingName()}]"));
+        //    string sql = $@"SELECT {columnString} FROM [{tableName}] WHERE ID = @Id";
+        //    SqlParameter[] sqlParameterList = new SqlParameter[] {
+        //        new SqlParameter("@Id",id)
+        //    };
+        //    using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+        //    {
+        //        SqlCommand command = new SqlCommand(sql, conn);
+        //        command.Parameters.AddRange(sqlParameterList);
+        //        conn.Open();
+        //        var reader = command.ExecuteReader();
+        //        if (reader.Read())
+        //        {
+        //            T t = Activator.CreateInstance<T>();
+        //            foreach (var prop in type.GetProperties())
+        //            {
+        //                prop.SetValue(t, reader[prop.GetMappingName()] is DBNull ? null : reader[prop.GetMappingName()]);
+        //            }
+        //            return t;
+        //        }
+        //        else
+        //        {
+        //            return default(T);
+        //        }
+        //    }
+        //}
+
+---------------------------------------------------------------------------------------------------------
+ private async static Task<List<T>> SQlselect<T>(string Sql) where T : class
+        {
+            Type type = typeof(T);
+            List<T> list = new List<T>();
+            using (SqliteConnection connectiontotal = new SqliteConnection())
+            {
+                try
+                {
+                    connectiontotal.Open();
+                    using SqliteCommand commandtotal = connectiontotal.CreateCommand();
+                    commandtotal.CommandText = Sql;
+                    commandtotal.CommandType = CommandType.Text;
+                    using SqliteDataReader dataReader = await commandtotal.ExecuteReaderAsync(CommandBehavior.CloseConnection);                    
+                    while (dataReader.Read())
+                    {
+                        T t = Activator.CreateInstance<T>();
+                        foreach (var prop in type.GetProperties())
+                        {
+                            var cloName = prop.Name;                           
+                            if (prop.IsDefined(typeof(ColumnAttribute), true))
+                            {
+                                ColumnAttribute ct = (ColumnAttribute)prop.GetCustomAttribute(typeof(ColumnAttribute));
+                                cloName = ct.Name;
+                            }
+                            prop.SetValue(t, dataReader[cloName]?.ToString());
+                        }
+                        list.Add(t);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new ArgumentException(e.Message);
+                }
+            }
+            return list;
+        }
+---------------------------------------------------------------------------------------------------
+ List<EmailQueue> emailQueues= await  _emailQueueSerivce.GetEmailQueueList("未发送", "", "", "", 1, 999);
+                Type type = typeof(EmailQueue);
+                List<EmailQueue> emailQueuelist = new List<EmailQueue>();
+                EmailQueue t = Activator.CreateInstance<EmailQueue>();
+                foreach (var item in type.GetProperties())
+                {
+                    var cloName = item.Name;
+                    if (item.IsDefined(typeof(ColumnAttribute), true))
+                    {
+                        ColumnAttribute ct = (ColumnAttribute)item.GetCustomAttribute(typeof(ColumnAttribute));
+                        cloName = ct.Name;
+                    }
+                    item.SetValue(t, cloName, dataReader[cloName]?.ToString());
+                }
+                emailQueuelist.Add(t);
+--------------------------------------------------------------------------------------------------------
+  Type type = typeof(AssetLib);
+                List<AssetLib> assetLibs = new List<AssetLib>();            
+                int ss = 2;
+                for (int i = 0; i < 2; i++)
+                {
+                    ++ss;
+                    AssetLib assetLib = Activator.CreateInstance<AssetLib>();
+                    foreach (var item in type.GetProperties())
+                    {     
+
+                        if (item.PropertyType== typeof(string) && item.Name != "FilebaseId" && item.Name != "EntityId" && item.Name != "KolId")
+                        {
+                            if (item.Name == "_id")
+                            {
+                                item.SetValue(assetLib, "00000000000000000000000" + ss);
+                            }
+                            else
+                            {
+                                item.SetValue(assetLib, "125555555555555555555555");
+                            }
+                        }
+                       
+                    }
+                    assetLibs.Add(assetLib);
+                }
+               var result=await CreateAssetLibs(assetLibs);
+               return UniData(result);
+
+

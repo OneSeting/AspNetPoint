@@ -1,0 +1,43 @@
+      // var cardNumArr = []
+      // // 定义一个空的数组
+      // var cardNumObj = {}
+      // // 定义一个空的对象
+      // cardNumObj = { name: '李白', id: 1 }
+      // cardNumArr.push(cardNumObj)
+      // console.log(cardNumArr)
+
+
+      // data.forEach(item => {
+      //   console.log(item['name'])
+      // })
+
+---------------------------------------------js将数组转化为一个对象obj，键值对形式{} 如下-----------------------------------
+var formArr =  [
+{name: "Name", value: "111"},
+{name: "Price", value: "2"},
+{name: "ProducingArea", value: "3"},
+{name: "ShelfLife", value: "44"},
+{name: "Stock", value: "5"}
+];
+var obj={ };
+//map循环方式
+  formArr.map(function (e, item) {
+  console.log(e.name);
+  obj[e.name] = e.value;
+  });
+//$.each循环方式
+  $.each(formArr, function (item,e) {
+  console.log(e.name);
+  obj[e.name] = e.value;
+  })
+//for in 循环方式
+  for (var item in formArr){
+         obj[formArr[item].name] = formArr[item].value;
+  };
+结果打印：obj = {Name: "2", Price: "3", ProducingArea: "4", ShelfLife: "5", Stock: "6"}
+///常用
+ var arr = []
+      var obj = JSON.parse(data.toString())
+      for (const i in obj) {
+        arr.push(obj[i])
+      }

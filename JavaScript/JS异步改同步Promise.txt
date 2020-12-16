@@ -1,0 +1,29 @@
+function getMailContent(operator, templateId, insData) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: tarpaService + "tarpa/Templates/CustomTemplates",
+            type: 'post',
+            dateType: 'json',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZWZkOWFlMmY5YzJlMDZjNzRjNzE4MGYiLCJ1bmlxdWVfbmFtZSI6InNhaWxmaXNoIiwicm9sZSI6IltcIjVlZDlkZTZjN2U3ODU3NDQ3ODMyMGFlMFwiXSIsImVtYWlsIjoic2FpbGZpc2hAaGV5d2luZC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI3LzMvMjAyMCA4OjI5OjQ3IEFNIiwibmJmIjoxNTkzNjc4NTg3LCJleHAiOjE1OTM3NjQ5ODcsImlhdCI6MTU5MzY3ODU4NywiaXNzIjoiSGV5d2luZCBVbmlib25lIiwiYXVkIjoiSGV5d2luZCBVbmlib25lIn0.98-EaOeXCGkoBVIBPTJlbhBWteOh-tGrw9FucwG7XqE'
+            },
+            data: JSON.stringify({ "TemplatesNAME": "" + templateId + "", "Body": { "Operator": "" + operator + "", "UserName": "" + insData.username + "" } }),
+            success: (result) => {
+                resolve(result)
+                return result;
+            },
+            error: (result) => {
+                reject()
+                $(".mask").hide();
+                $(".errorInfo").html(result.responseJSON.message);
+                $(".errorInfo").hide(0).show().delay(3000).hide(0);
+            }
+        });
+    })
+}
+
+
+getMailContent(operator, templateId, insData).then(res => {
+        console.log(res)
+    })

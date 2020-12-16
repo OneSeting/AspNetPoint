@@ -1,0 +1,55 @@
+.Net Core 定时计划任务流程
+1.Startup->中添加 await TarpaScheduleJob._().Initialize();
+2.
+public async Task Initialize() {
+            await UniSchedulerManager.Start();
+            var jonKeys = await UniSchedulerManager.UseScheduler().GetJobKeys(GroupMatcher<JobKey>.AnyGroup());
+            foreach (var key in jonKeys)
+            {  await UniSchedulerManager.DelJob(key);  }
+             await JobConfiguration();
+        }
+3.
+   private async Task JobConfiguration() {
+
+            #region CrawlerCommandQueueJob
+            await service.AddJobAsync<CrawlerCommandQueueJob>(new UniJob
+            {
+                TriggerType = TriggerTypeEnum.Cron,
+                Seconds = 30,
+                CronExpression = UniConfiguration.Get("Tarpa.Quartz.CrawlerCommandQueue.Cron"),  
+                JobName = "CrawlerCommandQueueJob",
+                //JobGroup = "group1",
+                TriggerName = "CrawlerCommandQueueTrigger",
+                //TriggerGroup = "group1",
+            });
+            #endregion
+}
+
+
+
+
+
+ static async Task Main(string[] args)
+        {
+            #region test002
+            {
+                Console.WriteLine("任务开始!");
+                QuartzService quartzService = new QuartzService();
+                UniJob uniJob = new UniJob()
+                {
+                    JobName = "testJob001",
+                    JobGroup = "testGroup001",
+                    TriggerName = "testTrigger001",
+                    TriggerGroup = "testGroup001",
+                    TriggerType = TriggerTypeEnum.Cron,
+                    CronExpression = "5/10 * * * * ?"
+                };
+                QuartzService.jobDetail_Collection.Add("testJobDetail", "job");
+                QuartzService.trigger_collection.Add("testTrigger", "trigger");
+                await quartzService.AddJobAsync<SchTestJob>(uniJob);
+                Console.WriteLine("任务完成!");
+                await UniSchedulerManager.Start();
+            }
+            #endregion
+            Console.ReadLine();
+        }

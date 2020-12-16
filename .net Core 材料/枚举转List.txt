@@ -1,0 +1,5 @@
+ public List<AssetShape> AssetShape
+        {
+            get => Array.ConvertAll<int, AssetShape>(AssetShapeId.ToArray(), (x) => (AssetShape)x).ToList();
+            set => AssetShapeId = Array.ConvertAll<AssetShape, int>(value.ToArray(), a => (int)a).ToList();
+        }

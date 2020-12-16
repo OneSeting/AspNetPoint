@@ -1,0 +1,47 @@
+ try
+            {
+                string urls = "mongodb://localhost:27017/";
+                //----------------------------------添加数据
+                ////连接数据库
+                //Console.WriteLine("连接数据库");
+                //var client = new MongoClient(urls);
+                ////获取database
+                //Console.WriteLine("获取database");
+                //var mydb = client.GetDatabase("myDb");
+                ////获取collection
+                //Console.WriteLine("获取collection_beifen");
+                //var collection = mydb.GetCollection<BsonDocument>("userinfo");
+                ////待添加的document
+                //Console.WriteLine("待添加的document");
+                //var doc = new BsonDocument{
+                //    { "_id",1 },
+                //    { "name", "张三" },
+                //    { "gongzuo", "教师" },
+                //    { "youjian","364931399@qq.com" },
+                //    { "roles","Mesghes" },
+                //    { "address","添加" }
+                //};
+
+                //collection.InsertOne(doc);
+                //Console.WriteLine("数据插入完毕");
+
+                //----------------------------------查询数据
+                var client = new MongoClient(urls);
+                //获取database
+                var mydb = client.GetDatabase("myDb");
+                //获取collection
+                var collection = mydb.GetCollection<BsonDocument>("Razor");
+                //Fileter用于过滤，如查询name = 吴九的第一条记录
+                var filter = Builders<BsonDocument>.Filter;
+                //Find(filter)进行查询
+                var doc = collection.Find(filter.Eq("_id", "3")).FirstOrDefault();
+
+               
+                
+            }
+
+            catch (Exception ex)
+            {
+                throw new System.Exception(ex.Message);
+                
+            }
